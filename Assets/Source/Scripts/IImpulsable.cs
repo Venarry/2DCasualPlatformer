@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IImpulsable
 {
-    void AddImpulse(Vector2 impulse);
+    public void AddImpulse(Vector2 impulse);
 }

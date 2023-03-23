@@ -15,9 +15,9 @@ public class DemonSkill : MonoBehaviour, ISkill
         currentCoolDown += Time.deltaTime;
     }
 
-    public void Cast()
+    public void TryCast()
     {
-        if (currentCoolDown < _coolDown)
+        if (Ready == false)
             return;
 
         Collider2D[] colliders = Physics2D.OverlapBoxAll(_skillCastPoint.position, new Vector2(_radius, _radius), 0);

@@ -10,6 +10,6 @@ public class DemonEnemy : Enemy
     protected override void DoAction()
     {
         if(_skill.Ready)
-            _skill.Cast();
+            _skill.TryCast();
     }
 }

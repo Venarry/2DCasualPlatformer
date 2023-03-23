@@ -1,5 +1,5 @@
 public interface ISkill
 {
-    void Cast();
-    bool Ready { get; }
+    public bool Ready { get; }
+    public void TryCast();
 }

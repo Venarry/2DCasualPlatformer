@@ -13,10 +13,7 @@ public class CharacterAnimation : MonoBehaviour
 
         _animator.SetFloat(_animatorSpeedHash, Mathf.Abs(moveDirection));
 
-        if(moveDirection > 0)
-            _spriteRenderer.flipX = false;
-
-        if (moveDirection < 0)
-            _spriteRenderer.flipX = true;
+        if(moveDirection != 0)
+            _spriteRenderer.flipX = moveDirection < 0;
     }
 }
