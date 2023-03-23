@@ -34,9 +34,6 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     {
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
-
-        if (Input.GetKeyDown(KeyCode.Q))
-            AddImpulse(new Vector2(-0.3f, 0.3f));
     }
 
     private void FixedUpdate()
@@ -76,8 +73,8 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
             }
         }
 
-        //_rigidbody2D.position += _moveForce + _impulse;
-        _rigidbody2D.position += _jumpForce;
+        if(_rigidbody2D.Cast(_jumpForce, _hits, _colliderOffset) == 0)
+            _rigidbody2D.position += _jumpForce;
     }
 
     private void Jump()
@@ -97,7 +94,8 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
         }
         else if (_jumpForce.y + _impulse.y <= _gravityModifier)
         {
-            _jumpForce.y = -0.01f;
+            float stayGravity = -0.01f;
+            _jumpForce.y = stayGravity;
         }
     }
 
