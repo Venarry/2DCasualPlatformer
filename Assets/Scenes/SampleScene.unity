@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de52d9842c0dfd146b0725988cecbf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.125
+  _speed: 6
   _offset: {x: 0, y: 0, z: -10}
   _target: {fileID: 1797025381}
 --- !u!1 &890987608
@@ -1258,7 +1258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1868738676
 Transform:
   m_ObjectHideFlags: 0
@@ -1313,7 +1313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b7d65238939aa4982e2c63b4caa839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.1
+  _speed: 4
   _targetPoints:
   - {fileID: 1887165043}
   - {fileID: 1790075416}

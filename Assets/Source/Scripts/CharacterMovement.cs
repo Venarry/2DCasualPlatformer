@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngineInternal;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -20,9 +21,8 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     private Vector2 _impulse;
     private RaycastHit2D[] _hits = new RaycastHit2D[16];
 
-    public float Velocity => _moveForce.magnitude;
     private float _moveDirection => Input.GetAxis(AxisHorizontal);
-    
+    public float Velocity => _moveForce.magnitude;
 
     private void Awake()
     {
@@ -34,10 +34,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     {
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
-    }
 
-    private void FixedUpdate()
-    {
         SetMoveForce();
         Translate();
         JumpForceReduce();
@@ -58,10 +55,12 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     {
         int countOfHit;
 
-        countOfHit = _rigidbody2D.Cast(_moveForce + _impulse, _hits, _colliderOffset);
+        Vector2 moveForce = (_moveForce + _impulse) * Time.deltaTime;
+
+        countOfHit = CastTo(moveForce, false);
 
         if(countOfHit == 0)
-            _rigidbody2D.position += _moveForce + _impulse;
+            _rigidbody2D.position += moveForce;
 
         for (int i = 0; i < countOfHit; i++)
         {
@@ -69,12 +68,40 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
 
             if (currentNormal.y > _stepAngle)
             {
-                _rigidbody2D.position += _moveForce + _impulse;
+                _rigidbody2D.position += moveForce;
             }
         }
 
-        if(_rigidbody2D.Cast(_jumpForce, _hits, _colliderOffset) == 0)
-            _rigidbody2D.position += _jumpForce;
+        Vector2 jumpForce = _jumpForce * Time.deltaTime;
+
+        countOfHit = CastTo(jumpForce, false);
+
+        if (countOfHit == 0)
+            _rigidbody2D.position += jumpForce;
+    }
+
+    private int CastTo(Vector2 direction, bool enableTriggerObjects)
+    {
+        int materialColliderHitsCount = 0;
+
+        int countOfHit = _rigidbody2D.Cast(direction, _hits, _colliderOffset);
+
+        if (enableTriggerObjects == false)
+        {
+            for (int i = 0; i < countOfHit; i++)
+            {
+                if (_hits[i].collider.isTrigger == false)
+                {
+                    materialColliderHitsCount++;
+                }
+            }
+
+            return materialColliderHitsCount;
+        }
+        else
+        {
+            return countOfHit;
+        }
     }
 
     private void Jump()
@@ -113,6 +140,10 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
         }
     }
 
-    private bool IsGrounded() =>
-        _rigidbody2D.Cast(Vector2.down, _hits, _colliderOffset) > 0;
+    private bool IsGrounded()
+    {
+        int countOfHit = CastTo(Vector2.down, false);
+
+        return countOfHit > 0;
+    }
 }

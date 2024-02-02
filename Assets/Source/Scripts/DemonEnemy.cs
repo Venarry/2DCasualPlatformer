@@ -1,4 +1,6 @@
-public class DemonEnemy : Enemy
+using UnityEngine;
+
+public class DemonEnemy : MonoBehaviour
 {
     private ISkill _skill;
 
@@ -7,9 +9,9 @@ public class DemonEnemy : Enemy
         _skill = GetComponent<ISkill>();
     }
 
-    protected override void DoAction()
+    private void Update()
     {
-        if(_skill.Ready)
+        if (_skill.Ready == true)
             _skill.TryCast();
     }
 }

@@ -154,10 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759e0cd82753b2a4ab8ef6928617acb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.1
-  _jumpHeight: 0.2
+  _speed: 5
+  _jumpHeight: 12
   _jumpLength: 0.2
-  _gravityModifier: 0.01
+  _gravityModifier: 0.6
   _impulseDurationMultiply: 0.9
   _stepAngle: 0.35
 --- !u!114 &5526428305356617251
