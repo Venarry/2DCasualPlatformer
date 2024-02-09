@@ -1,35 +1,41 @@
 using UnityEngine;
 
-public class DemonSkill : MonoBehaviour, ISkill
+public class DemonSkill : MonoBehaviour
 {
     [SerializeField] private float _coolDown = 1;
     [SerializeField] private float _radius = 2;
     [SerializeField] private Transform _skillCastPoint;
 
-    private float currentCoolDown;
+    private float _currentCoolDown;
 
-    public bool Ready => currentCoolDown >= _coolDown;
+    private bool _readyToCast => _currentCoolDown >= _coolDown;
 
-    private void FixedUpdate()
+    private void Update()
     {
-        currentCoolDown += Time.deltaTime;
+        _currentCoolDown += Time.deltaTime;
+        
+        if(_readyToCast == true)
+            TryCast();
     }
 
     public void TryCast()
     {
-        if (Ready == false)
+        if (_readyToCast == false)
             return;
 
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(_skillCastPoint.position, new Vector2(_radius, _radius), 0);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(
+            _skillCastPoint.position,
+            new Vector2(_radius, _radius),
+            0);
 
         foreach (Collider2D collider in colliders)
         {
-            if(collider.gameObject.TryGetComponent(out Player player))
+            if(collider.TryGetComponent(out Player player))
             {
-                player.transform.position = Vector3.zero;
+                player.Kill();
             }
         }
 
-        currentCoolDown = 0;
+        _currentCoolDown = 0;
     }
 }

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class SpikeAttack : MonoBehaviour
+public class SpikeCollisionHandler : MonoBehaviour
 {
     [SerializeField] private float _pushPower = 10f;
+    [SerializeField] private int _damage = 5;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -13,6 +14,11 @@ public class SpikeAttack : MonoBehaviour
                 .normalized;
 
             impulsable.AddImpulse(pushDirection * _pushPower);
+        }
+
+        if(collision.gameObject.TryGetComponent(out IDamageable damageable))
+        {
+            damageable.TakeDamage(_damage);
         }
     }
 }

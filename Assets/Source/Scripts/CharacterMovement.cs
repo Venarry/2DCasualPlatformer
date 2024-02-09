@@ -1,9 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngineInternal;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class CharacterMovement : MonoBehaviour, IImpulsable
+public class CharacterMovement : MonoBehaviour
 {
     const string AxisHorizontal = "Horizontal";
 
@@ -33,11 +33,11 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            Jump();
+            TryJump();
 
         SetMoveForce();
         Translate();
-        JumpForceReduce();
+        ReduceJumpForce();
         ImpulceReduce();
     }
 
@@ -53,31 +53,28 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
 
     private void Translate()
     {
-        int countOfHit;
+        Vector2 moveForce = (_moveForce + _impulse + _jumpForce) * Time.deltaTime;
+        int countOfHit = CastTo(moveForce, false);
 
-        Vector2 moveForce = (_moveForce + _impulse) * Time.deltaTime;
-
-        countOfHit = CastTo(moveForce, false);
-
-        if(countOfHit == 0)
-            _rigidbody2D.position += moveForce;
+        float moveForceMulti = 1;
 
         for (int i = 0; i < countOfHit; i++)
         {
             Vector2 currentNormal = _hits[i].normal;
 
-            if (currentNormal.y > _stepAngle)
+            if (1 - Mathf.Abs(currentNormal.y) < _stepAngle)
             {
-                _rigidbody2D.position += moveForce;
+                moveForceMulti += Mathf.Abs(currentNormal.x) + Mathf.Abs(currentNormal.y);
+                break;
+            }
+            else
+            {
+                moveForceMulti = 0;
+                break;
             }
         }
 
-        Vector2 jumpForce = _jumpForce * Time.deltaTime;
-
-        countOfHit = CastTo(jumpForce, false);
-
-        if (countOfHit == 0)
-            _rigidbody2D.position += jumpForce;
+        _rigidbody2D.MovePosition(_rigidbody2D.position + moveForce * moveForceMulti);
     }
 
     private int CastTo(Vector2 direction, bool enableTriggerObjects)
@@ -104,24 +101,24 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
         }
     }
 
-    private void Jump()
+    private void TryJump()
     {
         if (IsGrounded() == false)
+        {
             return;
+        }
 
         _jumpForce.y = _jumpHeight;
         _impulse += new Vector2(_jumpLength * _moveDirection, 0);
     }
 
-    private void JumpForceReduce()
+    private void ReduceJumpForce()
     {
-        if(IsGrounded() == false)
+        _jumpForce.y -= _gravityModifier;
+        float stayGravity = -0.01f;
+
+        if (IsGrounded() == true && _jumpForce.y + _impulse.y <= stayGravity)
         {
-            _jumpForce.y -= _gravityModifier;
-        }
-        else if (_jumpForce.y + _impulse.y <= _gravityModifier)
-        {
-            float stayGravity = -0.01f;
             _jumpForce.y = stayGravity;
         }
     }
