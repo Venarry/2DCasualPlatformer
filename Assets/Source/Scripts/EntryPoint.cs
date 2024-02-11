@@ -9,7 +9,7 @@ public class EntryPoint : MonoBehaviour
         PlayerFactory playerFactory = new();
 
         Vector2 playerSpawnPosiiton = Vector2.zero;
-        Player player = playerFactory.Create(playerSpawnPosiiton);
+        PlayerView player = playerFactory.Create(playerSpawnPosiiton);
 
         _cameraMovement.SetTarget(player.transform);
     }

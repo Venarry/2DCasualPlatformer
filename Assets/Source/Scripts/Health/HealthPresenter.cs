@@ -3,6 +3,7 @@ using System;
 public class HealthPresenter
 {
     private readonly HealthModel _healthModel;
+    private readonly DeathHandler _deathHandler;
 
     public event Action HealthChanged;
     public event Action HealthOver;
@@ -10,6 +11,12 @@ public class HealthPresenter
     public HealthPresenter(HealthModel healthModel)
     {
         _healthModel = healthModel;
+    }
+
+    public HealthPresenter(HealthModel healthModel, DeathHandler deathHandler = null)
+    {
+        _healthModel = healthModel;
+        _deathHandler = deathHandler;
     }
 
     public float HealthNormalized => (float)_healthModel.Value / _healthModel.MaxValue;
@@ -20,12 +27,14 @@ public class HealthPresenter
     {
         _healthModel.HealthChanged += OnHealthChanged;
         _healthModel.HealthOver += OnHealthOver;
+        _deathHandler?.Enable();
     }
 
     public void Disable()
     {
         _healthModel.HealthChanged -= OnHealthChanged;
         _healthModel.HealthOver -= OnHealthOver;
+        _deathHandler?.Disable();
     }
 
     public void Add(int value)
@@ -56,6 +65,7 @@ public class HealthPresenter
     private void OnHealthChanged()
     {
         HealthChanged?.Invoke();
+        // ihealthbar?.Change(count);
     }
 
     private void OnHealthOver()

@@ -30,9 +30,9 @@ public class DemonSkill : MonoBehaviour
 
         foreach (Collider2D collider in colliders)
         {
-            if(collider.TryGetComponent(out Player player))
+            if(collider.TryGetComponent(out PlayerView player))
             {
-                player.Kill();
+                player.Death();
             }
         }
 

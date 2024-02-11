@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
-public class HealthView : MonoBehaviour
+public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
 {
     private HealthPresenter _healthPresenter;
+    // private HealthBar _healthBar;
     private bool _isInitialized;
 
     public void Init(
@@ -41,7 +43,7 @@ public class HealthView : MonoBehaviour
         _healthPresenter.TakeDamage(value);
     }
 
-    public void Add(int value)
+    public void Heal(int value)
     {
         _healthPresenter.Add(value);
     }
@@ -49,10 +51,31 @@ public class HealthView : MonoBehaviour
     private void OnHealthChange()
     {
         Debug.Log($"Health changed - current health {_healthPresenter.Health}");
+        //_healthBar
     }
 
     private void OnHealthOver()
     {
         Debug.Log($"Health over");
+    }
+}
+
+public class DeathHandler
+{
+    private HealthPresenter _healthPresenter;
+
+    public void Enable()
+    {
+        _healthPresenter.HealthOver += OnHealthOver;
+    }
+
+    public void Disable()
+    {
+        _healthPresenter.HealthOver -= OnHealthOver;
+    }
+
+    private void OnHealthOver()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -2,22 +2,20 @@ using UnityEngine;
 
 public class PlayerFactory
 {
-    private readonly Player _player = Resources.Load<Player>(Paths.Player);
+    private readonly PlayerView _player = Resources.Load<PlayerView>(Paths.Player);
 
-    public Player Create(Vector3 position)
+    public PlayerView Create(Vector3 position)
     {
-        Player player = Object.Instantiate(_player, position, Quaternion.identity);
+        PlayerView player = Object.Instantiate(_player, position, Quaternion.identity);
 
         int maxHealth = 100;
         HealthModel healthModel = new(maxHealth);
         HealthPresenter healthPresenter = new(healthModel);
 
-        HealthView healthView = player.GetComponent<HealthView>();
+        PlayerHealthView healthView = player.GetComponent<PlayerHealthView>();
         healthView.Init(healthPresenter);
 
-        CharacterMovement characterMovement = player.GetComponent<CharacterMovement>();
-
-        player.Init(healthView, characterMovement);
+        DeathHandler deathHandler = new();
 
         return player;
     }

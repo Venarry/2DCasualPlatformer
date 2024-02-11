@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviour, IImpulsable
 {
     const string AxisHorizontal = "Horizontal";
 
