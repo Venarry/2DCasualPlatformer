@@ -51,31 +51,10 @@ public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
     private void OnHealthChange()
     {
         Debug.Log($"Health changed - current health {_healthPresenter.Health}");
-        //_healthBar
     }
 
     private void OnHealthOver()
     {
         Debug.Log($"Health over");
-    }
-}
-
-public class DeathHandler
-{
-    private HealthPresenter _healthPresenter;
-
-    public void Enable()
-    {
-        _healthPresenter.HealthOver += OnHealthOver;
-    }
-
-    public void Disable()
-    {
-        _healthPresenter.HealthOver -= OnHealthOver;
-    }
-
-    private void OnHealthOver()
-    {
-        throw new NotImplementedException();
     }
 }

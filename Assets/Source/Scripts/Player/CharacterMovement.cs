@@ -14,7 +14,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     [Range(0, 0.99f)] [SerializeField] private float _impulseDurationMultiply = 0.9f;
     [Range (0, 1)] [SerializeField] private float _stepAngle = 0.65f;
 
-    private float _colliderOffset;
+    private float _colliderOffset = 0.05f;
     private Rigidbody2D _rigidbody2D;
     private Vector2 _moveForce;
     private Vector2 _jumpForce;
@@ -27,7 +27,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _colliderOffset = GetComponent<BoxCollider2D>().edgeRadius;
+        //_colliderOffset = GetComponent<BoxCollider2D>().edgeRadius;
     }
 
     private void Update()
@@ -53,7 +53,8 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
 
     private void Translate()
     {
-        Vector2 moveForce = (_moveForce + _impulse + _jumpForce) * Time.deltaTime;
+        Vector2 moveForce = (_moveForce + _impulse) * Time.deltaTime;
+        Vector2 gravirtForce = _jumpForce * Time.deltaTime;
         int countOfHit = CastTo(moveForce, false);
 
         float moveForceMulti = 1;
@@ -64,7 +65,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
 
             if (1 - Mathf.Abs(currentNormal.y) < _stepAngle)
             {
-                moveForceMulti += Mathf.Abs(currentNormal.x) + Mathf.Abs(currentNormal.y);
+                moveForceMulti += Mathf.Abs(currentNormal.x);
                 break;
             }
             else
@@ -74,7 +75,8 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
             }
         }
 
-        _rigidbody2D.MovePosition(_rigidbody2D.position + moveForce * moveForceMulti);
+        _rigidbody2D.MovePosition(
+            _rigidbody2D.position + moveForce * moveForceMulti + gravirtForce);
     }
 
     private int CastTo(Vector2 direction, bool enableTriggerObjects)

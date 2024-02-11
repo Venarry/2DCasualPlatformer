@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class CoinSpawner : MonoBehaviour
     private void OnPickUp(Coin coin)
     {
         if (_spawnedCoins.ContainsKey(coin) == false)
-            throw new System.Exception();
+            throw new NullReferenceException(nameof(coin));
 
         Transform currentCointPoint = _spawnedCoins[coin];
         _spawnedCoins.Remove(coin);
