@@ -8,19 +8,19 @@ public class DemonSkill : MonoBehaviour
 
     private float _currentCoolDown;
 
-    private bool _readyToCast => _currentCoolDown >= _coolDown;
+    private bool _isReadyToCast => _currentCoolDown >= _coolDown;
 
     private void Update()
     {
         _currentCoolDown += Time.deltaTime;
         
-        if(_readyToCast == true)
+        if(_isReadyToCast == true)
             TryCast();
     }
 
     public void TryCast()
     {
-        if (_readyToCast == false)
+        if (_isReadyToCast == false)
             return;
 
         Collider2D[] colliders = Physics2D.OverlapBoxAll(

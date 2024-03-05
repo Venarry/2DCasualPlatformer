@@ -12,8 +12,7 @@ public class PlayerFactory
         HealthModel healthModel = new(maxHealth);
         HealthPresenter healthPresenter = new(healthModel);
 
-        PlayerHealthView healthView = player.GetComponent<PlayerHealthView>();
-        healthView.Init(healthPresenter);
+        player.Init(healthPresenter);
 
         return player;
     }

@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
 {
     private HealthPresenter _healthPresenter;
-    // private HealthBar _healthBar;
     private bool _isInitialized;
 
     public void Init(
@@ -24,8 +23,6 @@ public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
             return;
 
         _healthPresenter.Enable();
-        _healthPresenter.HealthChanged += OnHealthChange;
-        _healthPresenter.HealthOver += OnHealthOver;
     }
 
     private void OnDisable()
@@ -34,8 +31,6 @@ public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
             return;
 
         _healthPresenter.Disable();
-        _healthPresenter.HealthChanged -= OnHealthChange;
-        _healthPresenter.HealthOver -= OnHealthOver;
     }
 
     public void TakeDamage(int value)
@@ -46,15 +41,5 @@ public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
     public void Heal(int value)
     {
         _healthPresenter.Add(value);
-    }
-
-    private void OnHealthChange()
-    {
-        Debug.Log($"Health changed - current health {_healthPresenter.Health}");
-    }
-
-    private void OnHealthOver()
-    {
-        Debug.Log($"Health over");
     }
 }

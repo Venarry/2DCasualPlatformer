@@ -3,6 +3,7 @@ using System;
 public class HealthPresenter
 {
     private readonly HealthModel _healthModel;
+    //private readonly HealthBarView _healthBarView;
 
     public event Action HealthChanged;
     public event Action HealthOver;
@@ -18,13 +19,13 @@ public class HealthPresenter
 
     public void Enable()
     {
-        _healthModel.HealthChanged += OnHealthChanged;
+        _healthModel.HealthChanged += OnHealthChange;
         _healthModel.HealthOver += OnHealthOver;
     }
 
     public void Disable()
     {
-        _healthModel.HealthChanged -= OnHealthChanged;
+        _healthModel.HealthChanged -= OnHealthChange;
         _healthModel.HealthOver -= OnHealthOver;
     }
 
@@ -53,14 +54,16 @@ public class HealthPresenter
         _healthModel.TakeDamage(value);
     }
 
-    private void OnHealthChanged()
+    private void OnHealthChange()
     {
         HealthChanged?.Invoke();
         // ihealthbar?.Change(count);
+        UnityEngine.Debug.Log($"Health changed - current health {Health}");
     }
 
     private void OnHealthOver()
     {
         HealthOver?.Invoke();
+        UnityEngine.Debug.Log($"Health over");
     }
 }
