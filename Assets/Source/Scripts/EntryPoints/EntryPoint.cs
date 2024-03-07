@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
 {
     [SerializeField] private CameraMovement _cameraMovement;
     [SerializeField] private Transform[] _spikePatroolingPoints;
+    [SerializeField] private TMP_Text _playerHealthLabel;
 
     private void Awake()
     {
@@ -11,7 +13,7 @@ public class EntryPoint : MonoBehaviour
         EnemySpikeFactory enemySpikeFactory = new();
 
         Vector2 playerSpawnPosiiton = Vector2.zero;
-        PlayerView player = playerFactory.Create(playerSpawnPosiiton);
+        PlayerView player = playerFactory.Create(playerSpawnPosiiton, _playerHealthLabel);
 
         Vector2 spikeSpawnPoint = new(3, 0.5f);
         float spikeSpeed = 1f;

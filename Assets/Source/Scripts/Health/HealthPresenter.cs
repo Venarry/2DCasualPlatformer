@@ -3,7 +3,7 @@ using System;
 public class HealthPresenter
 {
     private readonly HealthModel _healthModel;
-    //private readonly HealthBarView _healthBarView;
+    private IHealthView _healthView;
 
     public event Action HealthChanged;
     public event Action HealthOver;
@@ -11,6 +11,12 @@ public class HealthPresenter
     public HealthPresenter(HealthModel healthModel)
     {
         _healthModel = healthModel;
+    }
+
+    public void Init(IHealthView healthView)
+    {
+        _healthView = healthView;
+        ShowHealth();
     }
 
     public float HealthNormalized => (float)_healthModel.Value / _healthModel.MaxValue;
@@ -54,10 +60,15 @@ public class HealthPresenter
         _healthModel.TakeDamage(value);
     }
 
+    private void ShowHealth()
+    {
+        _healthView?.OnHealthChange(_healthModel.Value, _healthModel.MaxValue);
+    }
+
     private void OnHealthChange()
     {
+        ShowHealth();
         HealthChanged?.Invoke();
-        // ihealthbar?.Change(count);
         UnityEngine.Debug.Log($"Health changed - current health {Health}");
     }
 

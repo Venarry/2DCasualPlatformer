@@ -1,45 +1,73 @@
-using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerHealthView : MonoBehaviour, IHealable, IDamageable
+public class PlayerHealthView : MonoBehaviour, IHealthView
 {
-    private HealthPresenter _healthPresenter;
-    private bool _isInitialized;
+    private const string HealthLabelMiddleSign = "/";
 
-    public void Init(
-        HealthPresenter healthPresenter)
+    [SerializeField] private Image _healthBar;
+    [SerializeField] private Image _smoothedHealthBar;
+
+    private TMP_Text _healthLabel;
+    private Coroutine _healthCoroutine;
+
+    public void SetHealthLabel(TMP_Text label)
     {
-        gameObject.SetActive(false);
-
-        _healthPresenter = healthPresenter;
-        _isInitialized = true;
-
-        gameObject.SetActive(true);
+        _healthLabel = label;
     }
 
-    private void OnEnable()
+    public void OnHealthChange(int value, int maxValue)
     {
-        if (_isInitialized == false)
-            return;
+        RefreshLabel(value, maxValue);
 
-        _healthPresenter.Enable();
+        float normalizedValue = (float)value / (maxValue);
+        RefreshBars(normalizedValue);
     }
 
-    private void OnDisable()
+    private void RefreshLabel(int value, int maxValue)
     {
-        if (_isInitialized == false)
-            return;
-
-        _healthPresenter.Disable();
+        _healthLabel.text = $"{value} {HealthLabelMiddleSign} {maxValue}";
     }
 
-    public void TakeDamage(int value)
+    private void RefreshBars(float normalizedValue)
     {
-        _healthPresenter.TakeDamage(value);
+        _healthBar.fillAmount = normalizedValue;
+
+        float lerpDuration = 4;
+
+        if(_healthCoroutine != null)
+            StopCoroutine(_healthCoroutine);
+
+        _healthCoroutine = StartCoroutine(ShowSmoothedHealthBar(normalizedValue, lerpDuration));
     }
 
-    public void Heal(int value)
+    private IEnumerator ShowSmoothedHealthBar(
+        float targetNormalizedValue,
+        float duration)
     {
-        _healthPresenter.Add(value);
+        if(duration < 0)
+            duration = 0;
+
+        float startHealthValue = _smoothedHealthBar.fillAmount;
+        float timer = 0;
+
+        while(timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            if (timer > duration)
+                timer = duration;
+
+            _smoothedHealthBar.fillAmount = Mathf
+                .Lerp(
+                startHealthValue,
+                targetNormalizedValue,
+                timer / duration);
+
+            //Debug.Log($"current value {_smoothedHealthBar.fillAmount}, duration {timer}");
+            yield return null;
+        }
     }
 }

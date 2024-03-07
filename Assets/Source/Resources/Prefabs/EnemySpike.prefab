@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pushPower: 35
-  _damage: 5
+  _damage: 10
 --- !u!114 &1480353967699909192
 MonoBehaviour:
   m_ObjectHideFlags: 0
