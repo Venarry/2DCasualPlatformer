@@ -5,7 +5,10 @@ public class EnemySpikeFactory
     private readonly EnemySpike _prefab = Resources.Load<EnemySpike>(Paths.EnemySpike);
 
     public EnemySpike Create(
+        TargetsProvider targetsProvider,
         Vector3 position,
+        int teamIndex,
+        float maxHealth,
         float speed,
         float chaseSpeed,
         float chaseDistance,
@@ -14,7 +17,19 @@ public class EnemySpikeFactory
     {
         EnemySpike spike = Object.Instantiate(_prefab, position, Quaternion.identity);
 
-        spike.Init(speed, chaseSpeed, chaseDistance, patroolingTargets, targetToChase);
+        HealthModel healthModel = new(maxHealth);
+        HealthPresenter healthPresenter = new(healthModel);
+
+        spike.Init(
+            targetsProvider,
+            healthPresenter,
+            teamIndex,
+            speed,
+            chaseSpeed,
+            chaseDistance,
+            patroolingTargets,
+            targetToChase);
+
         return spike;
     }
 }

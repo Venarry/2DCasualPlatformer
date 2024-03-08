@@ -1,41 +1,32 @@
 using System;
 
-public class HealthPresenter
+public class HealthPresenter : IHealthProvider
 {
     private readonly HealthModel _healthModel;
-    private IHealthView _healthView;
-
-    public event Action HealthChanged;
-    public event Action HealthOver;
 
     public HealthPresenter(HealthModel healthModel)
     {
         _healthModel = healthModel;
-    }
-
-    public void Init(IHealthView healthView)
-    {
-        _healthView = healthView;
-        ShowHealth();
-    }
-
-    public float HealthNormalized => (float)_healthModel.Value / _healthModel.MaxValue;
-    public int Health => _healthModel.Value;
-    public int MaxHealth => _healthModel.MaxValue;
-
-    public void Enable()
-    {
         _healthModel.HealthChanged += OnHealthChange;
         _healthModel.HealthOver += OnHealthOver;
     }
 
-    public void Disable()
+    ~HealthPresenter()
     {
         _healthModel.HealthChanged -= OnHealthChange;
         _healthModel.HealthOver -= OnHealthOver;
     }
 
-    public void Add(int value)
+    public event Action HealthChanged;
+    public event Action HealthOver;
+
+    public float HealthNormalized => (float)_healthModel.Value / _healthModel.MaxValue;
+    public float Health => _healthModel.Value;
+    public double RoundedHealth => Math.Ceiling(_healthModel.Value); 
+    public float MaxHealth => _healthModel.MaxValue;
+    public double RoundedMaxHealth => Math.Ceiling(_healthModel.MaxValue); 
+
+    public void Add(float value)
     {
         _healthModel.Add(value);
     }
@@ -45,29 +36,28 @@ public class HealthPresenter
         _healthModel.Restore();
     }
 
-    public void SetHealth(int value)
+    public void SetHealth(float value)
     {
         _healthModel.SetHealth(value);
     }
 
-    public void SetMaxHealth(int value)
+    public void SetMaxHealth(float value)
     {
         _healthModel.SetMaxHealth(value);
     }
 
-    public void TakeDamage(int value)
+    public void TakeDamage(float value)
     {
         _healthModel.TakeDamage(value);
     }
 
-    private void ShowHealth()
+    /*private void ShowHealth()
     {
         _healthView?.OnHealthChange(_healthModel.Value, _healthModel.MaxValue);
-    }
+    }*/
 
     private void OnHealthChange()
     {
-        ShowHealth();
         HealthChanged?.Invoke();
         UnityEngine.Debug.Log($"Health changed - current health {Health}");
     }

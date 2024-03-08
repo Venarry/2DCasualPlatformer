@@ -14,6 +14,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     [Range(0, 0.99f)] [SerializeField] private float _impulseDurationMultiply = 0.9f;
     [Range (0, 1)] [SerializeField] private float _stepAngle = 0.65f;
 
+    private IInputsHandler _inputsHandler;
     private float _colliderOffset = 0.05f;
     private Rigidbody2D _rigidbody2D;
     private Vector2 _moveForce;
@@ -21,13 +22,18 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     private Vector2 _impulse;
     private RaycastHit2D[] _hits = new RaycastHit2D[16];
 
-    private float _moveDirection => Input.GetAxis(AxisHorizontal);
+    private float _moveDirection => _inputsHandler.MoveDirection.x;
     public float Velocity => _moveForce.magnitude;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        //_colliderOffset = GetComponent<BoxCollider2D>().edgeRadius;
+        _colliderOffset = GetComponent<BoxCollider2D>().edgeRadius;
+    }
+
+    public void Init(IInputsHandler inputsHandler)
+    {
+        _inputsHandler = inputsHandler;
     }
 
     private void Update()

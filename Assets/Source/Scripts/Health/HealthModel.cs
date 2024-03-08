@@ -3,23 +3,22 @@ using System;
 public class HealthModel
 {
     public event Action HealthChanged;
-    //public event Action HealthSet;
     public event Action HealthOver;
 
-    public HealthModel(int maxValue)
+    public HealthModel(float maxValue)
     {
         MaxValue = maxValue;
         Value = maxValue;
     }
 
-    public HealthModel(int maxValue, int value)
+    public HealthModel(float maxValue, float value)
     {
         MaxValue = maxValue;
         Value = value;
     }
 
-    public int Value { get; private set; }
-    public int MaxValue { get; private set; }
+    public float Value { get; private set; }
+    public float MaxValue { get; private set; }
 
     public void Restore()
     {
@@ -27,7 +26,7 @@ public class HealthModel
         HealthChanged?.Invoke();
     }
 
-    public void SetHealth(int value)
+    public void SetHealth(float value)
     {
         if (value < 0)
         {
@@ -41,7 +40,7 @@ public class HealthModel
             HealthOver?.Invoke();
     }
 
-    public void SetMaxHealth(int value)
+    public void SetMaxHealth(float value)
     {
         if (value < 1)
             value = 1;
@@ -49,7 +48,7 @@ public class HealthModel
         MaxValue = value;
     }
 
-    public void TakeDamage(int value)
+    public void TakeDamage(float value)
     {
         if (Value <= 0)
             return;
@@ -65,7 +64,7 @@ public class HealthModel
         HealthChanged?.Invoke();
     }
 
-    public void Add(int value)
+    public void Add(float value)
     {
         if(value < 0)
             value = 0;

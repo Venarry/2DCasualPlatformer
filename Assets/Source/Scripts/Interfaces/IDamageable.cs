@@ -1,4 +1,4 @@
-public interface IDamageable 
+public interface IDamageable : ITarget
 {
-    public void TakeDamage(int value);
+    public void TakeDamage(float value);
 }

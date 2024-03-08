@@ -1,4 +1,4 @@
-public interface IHealable
+public interface IHealable : ITarget
 {
-    public void Heal(int value);
+    public void Heal(float value);
 }

@@ -1,44 +1,22 @@
 using System;
 using UnityEngine;
 
-public class HealthView : MonoBehaviour, IHealable, IDamageable
+public class HealthView : MonoBehaviour
 {
     private HealthPresenter _healthPresenter;
-    private bool _isInitialized;
 
     public void Init(
         HealthPresenter healthPresenter)
     {
-        gameObject.SetActive(false);
-
         _healthPresenter = healthPresenter;
-        _isInitialized = true;
-
-        gameObject.SetActive(true);
     }
 
-    private void OnEnable()
-    {
-        if (_isInitialized == false)
-            return;
-
-        _healthPresenter.Enable();
-    }
-
-    private void OnDisable()
-    {
-        if (_isInitialized == false)
-            return;
-
-        _healthPresenter.Disable();
-    }
-
-    public void TakeDamage(int value)
+    public void TakeDamage(float value)
     {
         _healthPresenter.TakeDamage(value);
     }
 
-    public void Heal(int value)
+    public void Heal(float value)
     {
         _healthPresenter.Add(value);
     }

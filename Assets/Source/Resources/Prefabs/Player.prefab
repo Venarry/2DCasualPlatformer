@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 2165786889306740531}
   - component: {fileID: 4018517701061455945}
   - component: {fileID: 5888622596309403531}
+  - component: {fileID: 4976327066946940306}
   - component: {fileID: 1536519032793443335}
   - component: {fileID: 1536519032793443332}
   m_Layer: 0
@@ -192,6 +193,7 @@ MonoBehaviour:
   _healthView: {fileID: 4018517701061455945}
   _playerHealthView: {fileID: 5888622596309403531}
   _characterMovement: {fileID: 1536519032793443334}
+  _activateSkillsHandler: {fileID: 4976327066946940306}
 --- !u!114 &4018517701061455945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +220,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 6139040441923178245}
   _smoothedHealthBar: {fileID: 2309765805818705725}
+--- !u!114 &4976327066946940306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536519032793443336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a1ccd61d69add47bb04640199925a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &1536519032793443335
 Rigidbody2D:
   serializedVersion: 4

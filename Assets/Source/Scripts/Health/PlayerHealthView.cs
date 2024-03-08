@@ -11,36 +11,57 @@ public class PlayerHealthView : MonoBehaviour, IHealthView
     [SerializeField] private Image _smoothedHealthBar;
 
     private TMP_Text _healthLabel;
-    private Coroutine _healthCoroutine;
+    private Coroutine _healthBarCoroutine;
+    private IHealthProvider _healthProvider;
 
-    public void SetHealthLabel(TMP_Text label)
+    public void Init(IHealthProvider healthProvider, TMP_Text label)
     {
+        _healthProvider = healthProvider;
         _healthLabel = label;
+        _healthProvider.HealthChanged += OnHealthChange;
+
+        InitViews();
     }
 
-    public void OnHealthChange(int value, int maxValue)
+    private void OnDestroy()
     {
-        RefreshLabel(value, maxValue);
-
-        float normalizedValue = (float)value / (maxValue);
-        RefreshBars(normalizedValue);
+        _healthProvider.HealthChanged -= OnHealthChange;
     }
 
-    private void RefreshLabel(int value, int maxValue)
+    public void OnHealthChange()
     {
-        _healthLabel.text = $"{value} {HealthLabelMiddleSign} {maxValue}";
+        RefreshLabel();
+        RefreshBars();
     }
 
-    private void RefreshBars(float normalizedValue)
+    private void InitViews()
     {
-        _healthBar.fillAmount = normalizedValue;
+        RefreshLabel();
+        _healthBar.fillAmount = _healthProvider.HealthNormalized;
+        _smoothedHealthBar.fillAmount = _healthProvider.HealthNormalized;
+    }
 
-        float lerpDuration = 4;
+    private void RefreshLabel()
+    {
+        _healthLabel.text = 
+            $"{_healthProvider.RoundedHealth} {HealthLabelMiddleSign} {_healthProvider.MaxHealth}";
+    }
 
-        if(_healthCoroutine != null)
-            StopCoroutine(_healthCoroutine);
+    private void RefreshBars()
+    {
+        _healthBar.fillAmount = _healthProvider.HealthNormalized;
+        RefreshSmoothBar(_healthProvider.HealthNormalized);
+    }
 
-        _healthCoroutine = StartCoroutine(ShowSmoothedHealthBar(normalizedValue, lerpDuration));
+    private void RefreshSmoothBar(float normalizedValue)
+    {
+        float lerpDuration = 1;
+
+        if (_healthBarCoroutine != null)
+            StopCoroutine(_healthBarCoroutine);
+
+        _healthBarCoroutine = StartCoroutine(
+            ShowSmoothedHealthBar(normalizedValue, lerpDuration));
     }
 
     private IEnumerator ShowSmoothedHealthBar(
@@ -49,6 +70,8 @@ public class PlayerHealthView : MonoBehaviour, IHealthView
     {
         if(duration < 0)
             duration = 0;
+
+        Debug.Log(targetNormalizedValue);
 
         float startHealthValue = _smoothedHealthBar.fillAmount;
         float timer = 0;
