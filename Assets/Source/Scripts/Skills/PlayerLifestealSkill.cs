@@ -47,13 +47,21 @@ public class PlayerLifestealSkill : BaseActiveSkill, ISkill
     private IEnumerator CastingSkill(IDamageable damageable)
     {
         float timeLeft = 0;
-        
-        while(timeLeft < _baseDuration)
+
+        while (timeLeft <= _baseDuration)
         {
-            float targetValue = _baseHealthLifestealPerSecond * Time.deltaTime;
+            float targetMultiply = Time.deltaTime;
+
+            timeLeft += Time.deltaTime;
+
+            if (timeLeft > _baseDuration)
+            {
+                targetMultiply -= (timeLeft - _baseDuration);
+            }
+
+            float targetValue = _baseHealthLifestealPerSecond * targetMultiply;
             _healthPresenter?.Add(targetValue);
             damageable?.TakeDamage(targetValue);
-            timeLeft += Time.deltaTime;
 
             yield return null;
         }

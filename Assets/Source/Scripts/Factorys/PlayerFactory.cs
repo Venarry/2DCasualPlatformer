@@ -22,7 +22,7 @@ public class PlayerFactory
         HealthModel healthModel = new(maxHealth);
         HealthPresenter healthPresenter = new(healthModel);
 
-        Sprite lifestealSkillSprite = Resources.Load<Sprite>("Images/LifestealSkillIcon");
+        Sprite lifestealSkillSprite = SkillsImageDataSource.LifestealSkill;
         PlayerLifestealSkill lifestealSkill = player.AddComponent<PlayerLifestealSkill>();
         lifestealSkill.Init(lifestealSkillSprite, healthPresenter, tartgetsFinderForSkillCast, teamIndex);
 
