@@ -1,31 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyHealthView : MonoBehaviour
+public class EnemyHealthView : HealthView
 {
     [SerializeField] private Image _healthBar;
 
-    private IHealthProvider _healthProvider;
-
-    public void Init(IHealthProvider healthProvider)
+    public void Init(HealthModel healthModel)
     {
-        _healthProvider = healthProvider;
-        _healthProvider.HealthChanged += OnHealthChange;
-
-        OnHealthChange();
+        SetModel(healthModel);
+        _healthBar.fillAmount = HealthProvider.HealthNormalized;
+        HealthProvider.HealthChanged += OnHealthChange;
     }
 
     private void OnDestroy()
     {
-        _healthProvider.HealthChanged -= OnHealthChange;
+        HealthProvider.HealthChanged -= OnHealthChange;
     }
 
-    private void OnHealthChange()
+    protected override void OnHealthChange()
     {
-        _healthBar.fillAmount = _healthProvider.HealthNormalized;
+        _healthBar.fillAmount = HealthProvider.HealthNormalized;
     }
 }

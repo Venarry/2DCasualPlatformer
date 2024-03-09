@@ -1,6 +1,6 @@
 using System;
 
-public class HealthModel
+public class HealthModel : IHealthProvider
 {
     public event Action HealthChanged;
     public event Action HealthOver;
@@ -19,6 +19,12 @@ public class HealthModel
 
     public float Value { get; private set; }
     public float MaxValue { get; private set; }
+
+    public float HealthNormalized => (float)Value / MaxValue;
+    public float Health => Value;
+    public double RoundedHealth => Math.Ceiling(Value);
+    public float MaxHealth => MaxValue;
+    public double RoundedMaxHealth => Math.Ceiling(MaxValue);
 
     public void Restore()
     {

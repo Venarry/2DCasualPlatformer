@@ -6,19 +6,17 @@ using UnityEngine;
 public class EnemySpike : BaseHero, IHealable, IDamageable
 {
     private StateMachine _stateMachine;
-    private HealthView _healthView;
     private EnemyHealthView _enemyHealthView;
 
     private void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
-        _healthView = GetComponent<HealthView>();
         _enemyHealthView = GetComponent<EnemyHealthView>();
     }
 
     public void Init(
         TargetsProvider targetsProvider,
-        HealthPresenter healthPresenter,
+        HealthModel healthModel,
         int teamIndex,
         float speed,
         float chaseSpeed,
@@ -27,8 +25,7 @@ public class EnemySpike : BaseHero, IHealable, IDamageable
         Transform targetToChase)
     {
         InitBaseParamenters(teamIndex);
-        _enemyHealthView.Init(healthPresenter);
-        _healthView.Init(healthPresenter);
+        _enemyHealthView.Init(healthModel);
         targetsProvider.Add(this);
 
         EnemySpikePatroolingState patroolingState = new(
@@ -54,11 +51,11 @@ public class EnemySpike : BaseHero, IHealable, IDamageable
 
     public void Heal(float value)
     {
-        _healthView.Heal(value);
+        _enemyHealthView.Heal(value);
     }
 
     public void TakeDamage(float value)
     {
-        _healthView.TakeDamage(value);
+        _enemyHealthView.TakeDamage(value);
     }
 }

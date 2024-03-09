@@ -3,21 +3,43 @@ using UnityEngine;
 
 public class HealthView : MonoBehaviour
 {
-    private HealthPresenter _healthPresenter;
+    private HealthModel _healthModel;
 
-    public void Init(
-        HealthPresenter healthPresenter)
+    protected IHealthProvider HealthProvider => _healthModel;
+
+    protected void SetModel(
+        HealthModel healthModel)
     {
-        _healthPresenter = healthPresenter;
+        _healthModel = healthModel;
+        _healthModel.HealthChanged += OnHealthChange;
+        _healthModel.HealthOver += OnHealthOver;
+    }
+
+    private void OnDestroy()
+    {
+        _healthModel.HealthChanged -= OnHealthChange;
+        _healthModel.HealthOver -= OnHealthOver;
+    }
+
+    protected virtual void InitViews()
+    {
+    }
+
+    protected virtual void OnHealthChange()
+    {
+    }
+
+    protected virtual void OnHealthOver()
+    {
     }
 
     public void TakeDamage(float value)
     {
-        _healthPresenter.TakeDamage(value);
+        _healthModel.TakeDamage(value);
     }
 
     public void Heal(float value)
     {
-        _healthPresenter.Add(value);
+        _healthModel.Add(value);
     }
 }

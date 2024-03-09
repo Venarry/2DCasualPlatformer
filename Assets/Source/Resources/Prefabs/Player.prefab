@@ -117,7 +117,6 @@ GameObject:
   - component: {fileID: 1536519032793443334}
   - component: {fileID: 5526428305356617251}
   - component: {fileID: 2165786889306740531}
-  - component: {fileID: 4018517701061455945}
   - component: {fileID: 5888622596309403531}
   - component: {fileID: 4976327066946940306}
   - component: {fileID: -2319461472697394712}
@@ -191,22 +190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8636d09f2eff7634d8e44ac9c4e969df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthView: {fileID: 4018517701061455945}
   _playerHealthView: {fileID: 5888622596309403531}
   _characterMovement: {fileID: 1536519032793443334}
   _activateSkillsHandler: {fileID: 4976327066946940306}
---- !u!114 &4018517701061455945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536519032793443336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e052a78ffff61be44b1b0bbecdceb4bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5888622596309403531
 MonoBehaviour:
   m_ObjectHideFlags: 0

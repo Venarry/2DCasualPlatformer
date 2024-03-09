@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,7 +10,7 @@ public class PlayerFactory
         TargetsProvider targetsProvider,
         SkillsProvider skillsProvider,
         Vector3 position,
-        IInputsHandler inputsHandler,
+        IInputsProvider inputsHandler,
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast,
         int teamIndex,
         TMP_Text healthLabel)
@@ -20,15 +19,24 @@ public class PlayerFactory
 
         int maxHealth = 100;
         HealthModel healthModel = new(maxHealth);
-        HealthPresenter healthPresenter = new(healthModel);
 
         Sprite lifestealSkillSprite = SkillsImageDataSource.LifestealSkill;
         PlayerLifestealSkill lifestealSkill = player.AddComponent<PlayerLifestealSkill>();
-        lifestealSkill.Init(lifestealSkillSprite, healthPresenter, tartgetsFinderForSkillCast, teamIndex);
+        lifestealSkill.Init(
+            lifestealSkillSprite,
+            healthModel,
+            tartgetsFinderForSkillCast,
+            teamIndex);
 
         skillsProvider.Add(lifestealSkill);
 
-        player.Init(targetsProvider, healthPresenter, inputsHandler, skillsProvider, teamIndex, healthLabel);
+        player.Init(
+            targetsProvider,
+            healthModel,
+            inputsHandler,
+            skillsProvider,
+            teamIndex,
+            healthLabel);
 
         return player;
     }

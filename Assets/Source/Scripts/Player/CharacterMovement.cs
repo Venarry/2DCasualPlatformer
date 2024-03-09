@@ -14,7 +14,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
     [Range(0, 0.99f)] [SerializeField] private float _impulseDurationMultiply = 0.9f;
     [Range (0, 1)] [SerializeField] private float _stepAngle = 0.65f;
 
-    private IInputsHandler _inputsHandler;
+    private IInputsProvider _inputsHandler;
     private float _colliderOffset = 0.05f;
     private Rigidbody2D _rigidbody2D;
     private Vector2 _moveForce;
@@ -31,7 +31,7 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
         _colliderOffset = GetComponent<BoxCollider2D>().edgeRadius;
     }
 
-    public void Init(IInputsHandler inputsHandler)
+    public void Init(IInputsProvider inputsHandler)
     {
         _inputsHandler = inputsHandler;
     }

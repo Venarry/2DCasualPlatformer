@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerActivateSkillsHandler : MonoBehaviour
 {
-    private IInputsHandler _inputsHandler;
+    private IInputsProvider _inputsHandler;
     private SkillsProvider _skillsProvider;
 
-    public void Init(SkillsProvider skillsProvider, IInputsHandler inputsHandler)
+    public void Init(SkillsProvider skillsProvider, IInputsProvider inputsHandler)
     {
         _inputsHandler = inputsHandler;
         _skillsProvider = skillsProvider;

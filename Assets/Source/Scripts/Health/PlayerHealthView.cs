@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthView : MonoBehaviour, IHealthView
+public class PlayerHealthView : HealthView
 {
     private const string HealthLabelMiddleSign = "/";
 
@@ -12,45 +12,39 @@ public class PlayerHealthView : MonoBehaviour, IHealthView
 
     private TMP_Text _healthLabel;
     private Coroutine _healthBarCoroutine;
-    private IHealthProvider _healthProvider;
 
-    public void Init(IHealthProvider healthProvider, TMP_Text label)
+    public void Init(HealthModel healthModel, TMP_Text label)
     {
-        _healthProvider = healthProvider;
         _healthLabel = label;
-        _healthProvider.HealthChanged += OnHealthChange;
-
+        SetModel(healthModel);
         InitViews();
     }
 
-    private void OnDestroy()
-    {
-        _healthProvider.HealthChanged -= OnHealthChange;
-    }
-
-    public void OnHealthChange()
+    protected override void OnHealthChange()
     {
         RefreshLabel();
         RefreshBars();
     }
 
-    private void InitViews()
+    protected override void InitViews()
     {
         RefreshLabel();
-        _healthBar.fillAmount = _healthProvider.HealthNormalized;
-        _smoothedHealthBar.fillAmount = _healthProvider.HealthNormalized;
+        _healthBar.fillAmount = HealthProvider.HealthNormalized;
+        _smoothedHealthBar.fillAmount = HealthProvider.HealthNormalized;
     }
 
     private void RefreshLabel()
     {
         _healthLabel.text = 
-            $"{_healthProvider.RoundedHealth} {HealthLabelMiddleSign} {_healthProvider.MaxHealth}";
+            $"{HealthProvider.RoundedHealth} " +
+            $"{HealthLabelMiddleSign} " +
+            $"{HealthProvider.MaxHealth}";
     }
 
     private void RefreshBars()
     {
-        _healthBar.fillAmount = _healthProvider.HealthNormalized;
-        RefreshSmoothBar(_healthProvider.HealthNormalized);
+        _healthBar.fillAmount = HealthProvider.HealthNormalized;
+        RefreshSmoothBar(HealthProvider.HealthNormalized);
     }
 
     private void RefreshSmoothBar(float normalizedValue)

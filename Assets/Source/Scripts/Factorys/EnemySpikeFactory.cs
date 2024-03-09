@@ -18,11 +18,10 @@ public class EnemySpikeFactory
         EnemySpike spike = Object.Instantiate(_prefab, position, Quaternion.identity);
 
         HealthModel healthModel = new(maxHealth);
-        HealthPresenter healthPresenter = new(healthModel);
 
         spike.Init(
             targetsProvider,
-            healthPresenter,
+            healthModel,
             teamIndex,
             speed,
             chaseSpeed,

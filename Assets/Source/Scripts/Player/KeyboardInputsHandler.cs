@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class KeyboardInputsHandler : IInputsHandler
+public class KeyboardInputsHandler : IInputsProvider
 {
     private const string Horizontal = "Horizontal";
     private const string Vertical = "Vertical";

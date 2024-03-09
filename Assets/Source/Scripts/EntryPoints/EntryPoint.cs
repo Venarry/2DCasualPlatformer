@@ -11,7 +11,7 @@ public class EntryPoint : MonoBehaviour
 
     private void Awake()
     {
-        IInputsHandler inputsHandler = new KeyboardInputsHandler();
+        IInputsProvider inputsHandler = new KeyboardInputsHandler();
 
         PlayerFactory playerFactory = new();
         EnemySpikeFactory enemySpikeFactory = new();

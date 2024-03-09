@@ -9,16 +9,16 @@ public class PlayerLifestealSkill : BaseActiveSkill, ISkill
     private readonly float _baseDuration = 6f;
     private readonly float _baseHealthLifestealPerSecond = 5f;
 
-    private HealthPresenter _healthPresenter;
+    private HealthModel _healthModel;
     private TartgetsFinderForSkillCast _tartgetsFinderForSkillCast;
 
     public void Init(
         Sprite sprite,
-        HealthPresenter healthPresenter,
+        HealthModel healthModel,
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast,
         int teamIndex)
     {
-        _healthPresenter = healthPresenter;
+        _healthModel = healthModel;
         _tartgetsFinderForSkillCast = tartgetsFinderForSkillCast;
         InitBaseParamenters(sprite, teamIndex, _baseCooldown);
     }
@@ -60,7 +60,7 @@ public class PlayerLifestealSkill : BaseActiveSkill, ISkill
             }
 
             float targetValue = _baseHealthLifestealPerSecond * targetMultiply;
-            _healthPresenter?.Add(targetValue);
+            _healthModel?.Add(targetValue);
             damageable?.TakeDamage(targetValue);
 
             yield return null;

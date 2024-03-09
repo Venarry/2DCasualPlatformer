@@ -1,25 +1,25 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerHealthView))]
+[RequireComponent(typeof(CharacterMovement))]
+[RequireComponent(typeof(PlayerActivateSkillsHandler))]
 public class PlayerView : BaseHero, IHealable, IDamageable
 {
-    [SerializeField] private HealthView _healthView;
     [SerializeField] private PlayerHealthView _playerHealthView;
     [SerializeField] private CharacterMovement _characterMovement;
     [SerializeField] private PlayerActivateSkillsHandler _activateSkillsHandler;
 
     public void Init(
         TargetsProvider targetsProvider,
-        HealthPresenter healthPresenter,
-        IInputsHandler inputsHandler,
+        HealthModel healthModel,
+        IInputsProvider inputsHandler,
         SkillsProvider skillsProvider,
         int teamIndex,
         TMP_Text label)
     {
         InitBaseParamenters(teamIndex);
-        _playerHealthView.Init(healthPresenter, label);
-        _healthView.Init(healthPresenter);
+        _playerHealthView.Init(healthModel, label);
         _characterMovement.Init(inputsHandler);
         _activateSkillsHandler.Init(skillsProvider, inputsHandler);
         targetsProvider.Add(this);
@@ -32,11 +32,11 @@ public class PlayerView : BaseHero, IHealable, IDamageable
 
     public void Heal(float value)
     {
-        _healthView.Heal(value);
+        _playerHealthView.Heal(value);
     }
 
     public void TakeDamage(float value)
     {
-        _healthView.TakeDamage(value);
+        _playerHealthView.TakeDamage(value);
     }
 }
