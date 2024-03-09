@@ -59,7 +59,10 @@ public class HealthModel
         Value -= value;
 
         if (Value <= 0)
+        {
+            Value = 0;
             HealthOver?.Invoke();
+        }
 
         HealthChanged?.Invoke();
     }

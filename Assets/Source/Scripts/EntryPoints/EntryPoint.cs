@@ -4,6 +4,8 @@ using UnityEngine;
 public class EntryPoint : MonoBehaviour
 {
     [SerializeField] private CameraMovement _cameraMovement;
+    [SerializeField] private SkillsView _skillsView;
+    [SerializeField] private Transform _skillsParent;
     [SerializeField] private Transform[] _spikePatroolingPoints;
     [SerializeField] private TMP_Text _playerHealthLabel;
 
@@ -14,17 +16,22 @@ public class EntryPoint : MonoBehaviour
         PlayerFactory playerFactory = new();
         EnemySpikeFactory enemySpikeFactory = new();
         TargetsProvider targetsProvider = new();
+        SkillsProvider skillsProvider = new(new());
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast = new(targetsProvider);
 
         int playerTeamIndex = 0;
         Vector2 playerSpawnPosiiton = Vector2.zero;
+
         PlayerView player = playerFactory.Create(
             targetsProvider,
+            skillsProvider,
             playerSpawnPosiiton,
             inputsHandler,
             tartgetsFinderForSkillCast,
             playerTeamIndex,
             _playerHealthLabel);
+
+        _skillsView.Init(_skillsParent, skillsProvider);
 
         int enemyTeamIndex = 1;
         Vector2 spikeSpawnPoint = new(3, 0.5f);
@@ -32,7 +39,8 @@ public class EntryPoint : MonoBehaviour
         float spikeSpeed = 1f;
         float spikeChaseSpeed = 2f;
         float spikeChaseDistance = 3f;
-        EnemySpike enemySpike = enemySpikeFactory.Create(
+
+        enemySpikeFactory.Create(
             targetsProvider,
             spikeSpawnPoint,
             enemyTeamIndex,

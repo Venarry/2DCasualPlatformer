@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerActivateSkillsHandler : MonoBehaviour
 {
     private IInputsHandler _inputsHandler;
-    private List<ISkill> _skills;
+    private SkillsProvider _skillsProvider;
 
-    public void Init(List<ISkill> skills, IInputsHandler inputsHandler)
+    public void Init(SkillsProvider skillsProvider, IInputsHandler inputsHandler)
     {
         _inputsHandler = inputsHandler;
-        _skills = skills.ToList();
+        _skillsProvider = skillsProvider;
     }
 
     private void Update()
@@ -22,12 +20,7 @@ public class PlayerActivateSkillsHandler : MonoBehaviour
 
         if (_inputsHandler.IsPressedActivateFirstSkill)
         {
-            _skills[0].TryCast();
+            _skillsProvider.TryCast(0);
         }
-    }
-
-    public void AddSkill(ISkill skill)
-    {
-        _skills.Add(skill);
     }
 }

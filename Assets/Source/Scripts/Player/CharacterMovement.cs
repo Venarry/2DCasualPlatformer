@@ -65,19 +65,17 @@ public class CharacterMovement : MonoBehaviour, IImpulsable
 
         float moveForceMulti = 1;
 
-        for (int i = 0; i < countOfHit; i++)
+        for(int i = 0; i < countOfHit; i++)
         {
             Vector2 currentNormal = _hits[i].normal;
 
             if (1 - Mathf.Abs(currentNormal.y) < _stepAngle)
             {
                 moveForceMulti += Mathf.Abs(currentNormal.x);
-                break;
             }
             else
             {
                 moveForceMulti = 0;
-                break;
             }
         }
 

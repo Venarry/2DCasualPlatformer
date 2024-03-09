@@ -71,8 +71,6 @@ public class PlayerHealthView : MonoBehaviour, IHealthView
         if(duration < 0)
             duration = 0;
 
-        Debug.Log(targetNormalizedValue);
-
         float startHealthValue = _smoothedHealthBar.fillAmount;
         float timer = 0;
 

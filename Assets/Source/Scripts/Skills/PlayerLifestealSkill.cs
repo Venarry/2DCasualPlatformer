@@ -1,58 +1,47 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerLifestealSkill : MonoBehaviour, ISkill
+public class PlayerLifestealSkill : BaseActiveSkill, ISkill
 {
     private readonly float _raduis = 5f;
     private readonly float _baseCooldown = 10f;
     private readonly float _baseDuration = 6f;
     private readonly float _baseHealthLifestealPerSecond = 5f;
+
     private HealthPresenter _healthPresenter;
     private TartgetsFinderForSkillCast _tartgetsFinderForSkillCast;
-    private int _teamIndex;
-    private float _timeLeft;
-
-    public float TimeToReady => _baseCooldown - _timeLeft;
 
     public void Init(
+        Sprite sprite,
         HealthPresenter healthPresenter,
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast,
         int teamIndex)
     {
         _healthPresenter = healthPresenter;
         _tartgetsFinderForSkillCast = tartgetsFinderForSkillCast;
-        _teamIndex = teamIndex;
-        _timeLeft = _baseCooldown;
+        InitBaseParamenters(sprite, teamIndex, _baseCooldown);
     }
 
-    private void Update()
-    {
-        if(_timeLeft < _baseCooldown)
-            _timeLeft += Time.deltaTime;
-        else
-            _timeLeft = _baseCooldown;
-    }
-
-    public void TryCast()
+    public override void TryCast()
     {
         if (TimeToReady > 0)
             return;
 
-        Debug.Log($"try cast {nameof(PlayerLifestealSkill)}");
-
         _tartgetsFinderForSkillCast.CastToRandomEnemyInRadius<IDamageable>(
-            _teamIndex,
-            transform.position, _raduis, Cast);
+            TeamIndex,
+            transform.position,
+            _raduis,
+            Cast);
     }
 
     private void Cast(IDamageable damageable)
     {
         if (TimeToReady > 0)
             return;
-        Debug.Log($"cast {nameof(PlayerLifestealSkill)}");
-        StartCoroutine(CastingSkill(damageable));
 
-        _timeLeft = 0;
+        StartCoroutine(CastingSkill(damageable));
+        ResetTimer();
     }
 
     private IEnumerator CastingSkill(IDamageable damageable)

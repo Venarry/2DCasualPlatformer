@@ -13,7 +13,7 @@ public class PlayerView : BaseHero, IHealable, IDamageable
         TargetsProvider targetsProvider,
         HealthPresenter healthPresenter,
         IInputsHandler inputsHandler,
-        List<ISkill> skills,
+        SkillsProvider skillsProvider,
         int teamIndex,
         TMP_Text label)
     {
@@ -21,7 +21,7 @@ public class PlayerView : BaseHero, IHealable, IDamageable
         _playerHealthView.Init(healthPresenter, label);
         _healthView.Init(healthPresenter);
         _characterMovement.Init(inputsHandler);
-        _activateSkillsHandler.Init(skills, inputsHandler);
+        _activateSkillsHandler.Init(skillsProvider, inputsHandler);
         targetsProvider.Add(this);
     }
 

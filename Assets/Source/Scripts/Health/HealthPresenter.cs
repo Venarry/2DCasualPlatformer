@@ -51,20 +51,15 @@ public class HealthPresenter : IHealthProvider
         _healthModel.TakeDamage(value);
     }
 
-    /*private void ShowHealth()
-    {
-        _healthView?.OnHealthChange(_healthModel.Value, _healthModel.MaxValue);
-    }*/
-
     private void OnHealthChange()
     {
         HealthChanged?.Invoke();
-        UnityEngine.Debug.Log($"Health changed - current health {Health}");
+        //UnityEngine.Debug.Log($"Health changed - current health {Health}");
     }
 
     private void OnHealthOver()
     {
         HealthOver?.Invoke();
-        UnityEngine.Debug.Log($"Health over");
+        //UnityEngine.Debug.Log($"Health over");
     }
 }

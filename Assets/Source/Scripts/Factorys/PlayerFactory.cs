@@ -9,6 +9,7 @@ public class PlayerFactory
 
     public PlayerView Create(
         TargetsProvider targetsProvider,
+        SkillsProvider skillsProvider,
         Vector3 position,
         IInputsHandler inputsHandler,
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast,
@@ -21,12 +22,13 @@ public class PlayerFactory
         HealthModel healthModel = new(maxHealth);
         HealthPresenter healthPresenter = new(healthModel);
 
+        Sprite lifestealSkillSprite = Resources.Load<Sprite>("Images/LifestealSkillIcon");
         PlayerLifestealSkill lifestealSkill = player.AddComponent<PlayerLifestealSkill>();
-        lifestealSkill.Init(healthPresenter, tartgetsFinderForSkillCast, teamIndex);
+        lifestealSkill.Init(lifestealSkillSprite, healthPresenter, tartgetsFinderForSkillCast, teamIndex);
 
-        List<ISkill> skills = new() { lifestealSkill };
+        skillsProvider.Add(lifestealSkill);
 
-        player.Init(targetsProvider, healthPresenter, inputsHandler, skills, teamIndex, healthLabel);
+        player.Init(targetsProvider, healthPresenter, inputsHandler, skillsProvider, teamIndex, healthLabel);
 
         return player;
     }
