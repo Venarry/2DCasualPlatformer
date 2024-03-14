@@ -54,10 +54,10 @@ public class HealthModel : IHealthProvider
         MaxValue = value;
     }
 
-    public void TakeDamage(float value)
+    public float TakeDamageWithOverflowValue(float value)
     {
         if (Value <= 0)
-            return;
+            return value;
 
         if (value < 0)
             value = 0;
@@ -66,11 +66,15 @@ public class HealthModel : IHealthProvider
 
         if (Value <= 0)
         {
+            float overflowValue = Value;
             Value = 0;
+
             HealthOver?.Invoke();
+            return overflowValue;
         }
 
         HealthChanged?.Invoke();
+        return 0;
     }
 
     public void Add(float value)

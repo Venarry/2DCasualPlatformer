@@ -13,10 +13,10 @@ public class PlayerHealthView : HealthView
     private TMP_Text _healthLabel;
     private Coroutine _healthBarCoroutine;
 
-    public void Init(HealthModel healthModel, TMP_Text label)
+    public void Init(HealthModel healthModel, int teamIndex, TMP_Text label)
     {
         _healthLabel = label;
-        SetModel(healthModel);
+        InitBaseView(healthModel, teamIndex);
         InitViews();
     }
 
@@ -26,7 +26,7 @@ public class PlayerHealthView : HealthView
         RefreshBars();
     }
 
-    protected override void InitViews()
+    private void InitViews()
     {
         RefreshLabel();
         _healthBar.fillAmount = HealthProvider.HealthNormalized;

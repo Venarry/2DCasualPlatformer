@@ -11,6 +11,7 @@ public class PlayerLifestealSkill : BaseActiveSkill, ISkill
 
     private HealthModel _healthModel;
     private TartgetsFinderForSkillCast _tartgetsFinderForSkillCast;
+    private Coroutine _activeCast;
 
     public void Init(
         Sprite sprite,
@@ -40,8 +41,15 @@ public class PlayerLifestealSkill : BaseActiveSkill, ISkill
         if (TimeToReady > 0)
             return;
 
-        StartCoroutine(CastingSkill(damageable));
+        damageable.HealthOver += OnTargetHealthOver;
+        _activeCast = StartCoroutine(CastingSkill(damageable));
         ResetTimer();
+    }
+
+    private void OnTargetHealthOver(IDamageable target)
+    {
+        target.HealthOver -= OnTargetHealthOver;
+        StopCoroutine(_activeCast);
     }
 
     private IEnumerator CastingSkill(IDamageable damageable)
@@ -50,18 +58,23 @@ public class PlayerLifestealSkill : BaseActiveSkill, ISkill
 
         while (timeLeft <= _baseDuration)
         {
-            float targetMultiply = Time.deltaTime;
+            if (Vector3.Distance(transform.position, damageable.Position) > _raduis)
+                StopCoroutine(_activeCast);
+
+            float lifestealMultiply = Time.deltaTime;
 
             timeLeft += Time.deltaTime;
 
             if (timeLeft > _baseDuration)
             {
-                targetMultiply -= (timeLeft - _baseDuration);
+                lifestealMultiply -= (timeLeft - _baseDuration);
             }
 
-            float targetValue = _baseHealthLifestealPerSecond * targetMultiply;
-            _healthModel?.Add(targetValue);
-            damageable?.TakeDamage(targetValue);
+            float lifestealValue = _baseHealthLifestealPerSecond * lifestealMultiply;
+
+            float overflowValue = damageable
+                .TakeDamageWithOverflowValue(lifestealValue);
+            _healthModel?.Add(lifestealValue - overflowValue);
 
             yield return null;
         }

@@ -15,8 +15,9 @@ public class EntryPoint : MonoBehaviour
 
         PlayerFactory playerFactory = new();
         EnemySpikeFactory enemySpikeFactory = new();
+        SkillsIconFactory skillsIconFactory = new();
         TargetsProvider targetsProvider = new();
-        SkillsProvider skillsProvider = new(new());
+        SkillsHolder skillsModel = new(new());
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast = new(targetsProvider);
 
         int playerTeamIndex = 0;
@@ -24,14 +25,14 @@ public class EntryPoint : MonoBehaviour
 
         PlayerView player = playerFactory.Create(
             targetsProvider,
-            skillsProvider,
+            skillsModel,
             playerSpawnPosiiton,
             inputsHandler,
             tartgetsFinderForSkillCast,
             playerTeamIndex,
             _playerHealthLabel);
 
-        _skillsView.Init(_skillsParent, skillsProvider);
+        _skillsView.Init(_skillsParent, skillsModel, skillsIconFactory);
 
         int enemyTeamIndex = 1;
         Vector2 spikeSpawnPoint = new(3, 0.5f);

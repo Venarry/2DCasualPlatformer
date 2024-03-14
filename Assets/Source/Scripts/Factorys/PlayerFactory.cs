@@ -8,7 +8,7 @@ public class PlayerFactory
 
     public PlayerView Create(
         TargetsProvider targetsProvider,
-        SkillsProvider skillsProvider,
+        SkillsHolder skillsProvider,
         Vector3 position,
         IInputsProvider inputsHandler,
         TartgetsFinderForSkillCast tartgetsFinderForSkillCast,

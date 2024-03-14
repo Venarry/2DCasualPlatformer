@@ -1,17 +1,19 @@
 using UnityEngine;
 
 [RequireComponent(typeof(StateMachine))]
-[RequireComponent(typeof(HealthView))]
 [RequireComponent(typeof(EnemyHealthView))]
-public class EnemySpike : BaseHero, IHealable, IDamageable
+[RequireComponent(typeof(EnemyDeathView))]
+public class EnemySpike : MonoBehaviour
 {
     private StateMachine _stateMachine;
     private EnemyHealthView _enemyHealthView;
+    private EnemyDeathView _enemyDeathView;
 
     private void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
         _enemyHealthView = GetComponent<EnemyHealthView>();
+        _enemyDeathView = GetComponent<EnemyDeathView>();
     }
 
     public void Init(
@@ -24,9 +26,9 @@ public class EnemySpike : BaseHero, IHealable, IDamageable
         Transform[] patroolingTargets,
         Transform targetToChase)
     {
-        InitBaseParamenters(teamIndex);
-        _enemyHealthView.Init(healthModel);
-        targetsProvider.Add(this);
+        _enemyHealthView.Init(healthModel, teamIndex);
+        _enemyDeathView.Init(healthModel, targetsProvider);
+        targetsProvider.Add(transform);
 
         EnemySpikePatroolingState patroolingState = new(
             transform,
@@ -47,15 +49,5 @@ public class EnemySpike : BaseHero, IHealable, IDamageable
         _stateMachine.Register(chaseState);
 
         _stateMachine.Switch<EnemySpikePatroolingState>();
-    }
-
-    public void Heal(float value)
-    {
-        _enemyHealthView.Heal(value);
-    }
-
-    public void TakeDamage(float value)
-    {
-        _enemyHealthView.TakeDamage(value);
     }
 }

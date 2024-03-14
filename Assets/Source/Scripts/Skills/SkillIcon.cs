@@ -16,7 +16,7 @@ public class SkillIcon : MonoBehaviour
         _image.sprite = sprite;
     }
 
-    public void SetCooldown(float normalizedValue, float timeToReady)
+    public void SetCooldownTime(float normalizedValue, float timeToReady)
     {
         _cooldown.fillAmount = normalizedValue;
         _timeToReadyLabel.text = Math.Ceiling(timeToReady).ToString();

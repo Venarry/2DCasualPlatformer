@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 1480353967699909192}
   - component: {fileID: 5747884843519228361}
   - component: {fileID: 4684213938668262695}
+  - component: {fileID: 1246023707861108527}
   m_Layer: 0
   m_Name: EnemySpike
   m_TagString: Untagged
@@ -199,6 +200,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 3326829432631397310}
+--- !u!114 &1246023707861108527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227415923372404428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da38fb02bac147e439cb91e4d8d95c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2244795210912481654
 GameObject:
   m_ObjectHideFlags: 0

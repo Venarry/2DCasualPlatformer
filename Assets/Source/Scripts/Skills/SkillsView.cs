@@ -6,24 +6,41 @@ public class SkillsView : MonoBehaviour
 {
     private readonly Dictionary<ISkill, SkillIcon> _skillsIcons = new();
     private Transform _skillsParent;
-    private SkillsProvider _skillsProvider;
+    private SkillsHolder _skillsHolder;
+    private SkillsIconFactory _skillsIconFactory;
 
-    public void Init(Transform skillsParent, SkillsProvider skillsProvider)
+    public void Init(
+        Transform skillsParent,
+        SkillsHolder skillsHolder,
+        SkillsIconFactory skillsIconFactory)
     {
         _skillsParent = skillsParent;
-        _skillsProvider = skillsProvider;
-        Show(_skillsProvider.Skills);
+        _skillsHolder = skillsHolder;
+        _skillsIconFactory = skillsIconFactory;
+        Show(_skillsHolder.Skills);
+    }
+
+    private void Show(ISkill[] skills)
+    {
+        foreach (var skill in skills)
+        {
+            Show(skill);
+        }
     }
 
     private void Show(ISkill skill)
     {
-        SkillIcon icon = Instantiate(Resources.Load<SkillIcon>("Prefabs/SkillIcon"), _skillsParent);
-        icon.Set(skill.Sprite);
+        SkillIcon icon = _skillsIconFactory.Create(_skillsParent, skill.Sprite);
 
         _skillsIcons.Add(skill, icon);
         skill.TimeLeftChanged += OnTimeChange;
         skill.SkillIsReady += OnSkillReady;
         OnTimeChange(skill);
+
+        if(skill.TimeToReady == 0)
+        {
+            _skillsIcons[skill].DisableTimeToReadyLabel();
+        }
     }
 
     private void OnSkillReady(ISkill skill)
@@ -40,14 +57,6 @@ public class SkillsView : MonoBehaviour
             currentIcon.EnableTimeToReadyLabel();
         }
 
-        currentIcon.SetCooldown(skill.TimeToReadyNormalized, skill.TimeToReady);
-    }
-
-    private void Show(ISkill[] skills)
-    {
-        foreach (var skill in skills)
-        {
-            Show(skill);
-        }
+        currentIcon.SetCooldownTime(skill.TimeToReadyNormalized, skill.TimeToReady);
     }
 }

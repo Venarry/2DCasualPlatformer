@@ -3,12 +3,12 @@ using UnityEngine;
 public class PlayerActivateSkillsHandler : MonoBehaviour
 {
     private IInputsProvider _inputsHandler;
-    private SkillsProvider _skillsProvider;
+    private SkillsHolder _skillsHolder;
 
-    public void Init(SkillsProvider skillsProvider, IInputsProvider inputsHandler)
+    public void Init(SkillsHolder skillsHolder, IInputsProvider inputsHandler)
     {
         _inputsHandler = inputsHandler;
-        _skillsProvider = skillsProvider;
+        _skillsHolder = skillsHolder;
     }
 
     private void Update()
@@ -20,7 +20,7 @@ public class PlayerActivateSkillsHandler : MonoBehaviour
 
         if (_inputsHandler.IsPressedActivateFirstSkill)
         {
-            _skillsProvider.TryCast(0);
+            _skillsHolder.TryCast(0);
         }
     }
 }

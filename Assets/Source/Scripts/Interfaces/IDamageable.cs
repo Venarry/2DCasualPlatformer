@@ -1,4 +1,7 @@
+using System;
+
 public interface IDamageable : ITarget
 {
-    public void TakeDamage(float value);
+    public event Action<IDamageable> HealthOver;
+    public float TakeDamageWithOverflowValue(float value);
 }

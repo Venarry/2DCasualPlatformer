@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class SkillsProvider
+public class SkillsHolder
 {
     private readonly List<ISkill> _skills = new();
 
-    public SkillsProvider(List<ISkill> skills)
+    public SkillsHolder(List<ISkill> skills)
     {
         _skills = skills.ToList();
     }
@@ -19,6 +19,9 @@ public class SkillsProvider
 
     public void TryCast(int index)
     {
+        if(index < 0)
+            return;
+
         if (index >= _skills.Count)
             return;
 

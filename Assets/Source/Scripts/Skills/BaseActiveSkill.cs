@@ -1,15 +1,16 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class BaseActiveSkill : MonoBehaviour, ISkill
 {
-    public Sprite Sprite { get; private set; }
-
     private float _baseCooldown = 10f;
     private float _timeLeft;
+    private Coroutine _coolDownCoroutine;
 
     public event Action<ISkill> TimeLeftChanged;
     public event Action<ISkill> SkillIsReady;
+    public Sprite Sprite { get; private set; }
     protected int TeamIndex { get; private set;}
     public float TimeToReady => _baseCooldown - _timeLeft;
     public float Cooldown => _baseCooldown;
@@ -25,16 +26,25 @@ public abstract class BaseActiveSkill : MonoBehaviour, ISkill
 
     private void Update()
     {
-        if (_timeLeft < _baseCooldown)
+        if (_coolDownCoroutine == null && _timeLeft < _baseCooldown)
+        {
+            _coolDownCoroutine = StartCoroutine(ReducingCooldownTime());
+        }
+    }
+
+    private IEnumerator ReducingCooldownTime()
+    {
+        while (_timeLeft < _baseCooldown)
         {
             _timeLeft += Time.deltaTime;
             TimeLeftChanged?.Invoke(this);
+
+            yield return null;
         }
-        else
-        {
-            _timeLeft = _baseCooldown;
-            SkillIsReady?.Invoke(this);
-        }
+
+        _timeLeft = _baseCooldown;
+        SkillIsReady?.Invoke(this);
+        _coolDownCoroutine = null;
     }
 
     protected void ResetTimer()

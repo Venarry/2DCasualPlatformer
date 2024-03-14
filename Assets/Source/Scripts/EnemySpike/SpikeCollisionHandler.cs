@@ -18,7 +18,7 @@ public class SpikeCollisionHandler : MonoBehaviour
 
         if(collision.gameObject.TryGetComponent(out IDamageable damageable))
         {
-            damageable.TakeDamage(_damage);
+            damageable.TakeDamageWithOverflowValue(_damage);
         }
     }
 }

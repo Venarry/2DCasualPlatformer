@@ -5,9 +5,9 @@ public class EnemyHealthView : HealthView
 {
     [SerializeField] private Image _healthBar;
 
-    public void Init(HealthModel healthModel)
+    public void Init(HealthModel healthModel, int teamIndex)
     {
-        SetModel(healthModel);
+        InitBaseView(healthModel, teamIndex);
         _healthBar.fillAmount = HealthProvider.HealthNormalized;
         HealthProvider.HealthChanged += OnHealthChange;
     }
